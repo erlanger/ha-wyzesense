@@ -17,12 +17,24 @@ import subprocess
 
 from homeassistant.const import CONF_FILENAME, CONF_DEVICE, \
     EVENT_HOMEASSISTANT_STOP, STATE_ON, STATE_OFF, ATTR_BATTERY_LEVEL, \
-    ATTR_STATE, ATTR_DEVICE_CLASS, DEVICE_CLASS_TIMESTAMP
+    ATTR_STATE, ATTR_DEVICE_CLASS
 
+# DEVICE_CLASS_TIMESTAMP will be deprecated in 2025.01
 try:
-    from homeassistant.components.binary_sensor import PLATFORM_SCHEMA, BinarySensorEntity, DEVICE_CLASS_MOTION, DEVICE_CLASS_DOOR
+    from homeassistant.components.sensor import SensorDeviceClass
+    DEVICE_CLASS_TIMESTAMP = SensorDeviceClass.TIMESTAMP
 except ImportError:
-    from homeassistant.components.binary_sensor import BinarySensorDevice as BinarySensorEntity, PLATFORM_SCHEMA, DEVICE_CLASS_MOTION, DEVICE_CLASS_DOOR
+    # old version
+    from homeassistant.const import DEVICE_CLASS_TIMESTAMP
+
+# DEVICE_CLASS_MOTION and DEVICE_CLASS_DOOR will be deprecated in 2025.01
+try:
+    from homeassistant.components.binary_sensor import PLATFORM_SCHEMA, BinarySensorEntity, BinarySensorDeviceClass
+    DEVICE_CLASS_MOTION = BinarySensorDeviceClass.MOTION
+    DEVICE_CLASS_DOOR = BinarySensorDeviceClass.DOOR
+except ImportError:
+    # old version
+    from homeassistant.components.binary_sensor import BinarySensorEntity, PLATFORM_SCHEMA, DEVICE_CLASS_MOTION, DEVICE_CLASS_DOOR
 
 from homeassistant.helpers.restore_state import RestoreEntity
 
